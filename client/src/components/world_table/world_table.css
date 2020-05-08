@@ -1,0 +1,17 @@
+.world_table tbody{
+    display:block;
+    overflow-y: scroll;
+    height: 500px;
+}
+
+.world_table thead {
+    display: block;
+    background: black;
+    color:#fff;
+}
+
+.world_table th, .world_table td {
+  padding: 5px;
+  text-align: left;
+  width: 100px;
+}

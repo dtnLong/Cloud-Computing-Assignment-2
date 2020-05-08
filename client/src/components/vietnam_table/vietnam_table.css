@@ -1,0 +1,17 @@
+.vietnam_table tbody{
+    display:block;
+    overflow-y: scroll;
+    height: 500px;
+}
+
+.vietnam_table thead {
+    display: block;
+    background: black;
+    color:#fff;
+}
+
+.vietnam_table th, .vietnam_table td {
+  padding: 5px;
+  text-align: left;
+  width: 100px;
+}
