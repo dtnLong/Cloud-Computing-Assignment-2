@@ -8,7 +8,6 @@ import VietnamTable from './components/vietnam_table/vietnam_table';
 function App() {
   return (
     <div className="App">
-      <p>Hello World</p>
       <WorldSummary />
       <VietnamSummary />
       <WorldTable />

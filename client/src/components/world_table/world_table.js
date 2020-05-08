@@ -5,14 +5,20 @@ class WorldTable extends Component {
     constructor() {
         super();
         this.handleChange = this.handleChange.bind(this);
+        this.checkboxChange = this.checkboxChange.bind(this);
         this.state = {
             search: "",
+            checked: false,
             worldtable: []
         }
     }
 
     handleChange(event) {
         this.setState({search: event.target.value});
+    }
+
+    checkboxChange(event) {
+        this.setState({checked: event.target.checked})
     }
 
     componentDidMount() {
@@ -27,7 +33,7 @@ class WorldTable extends Component {
                 <h1>Statistic by Country</h1>
                 <input type='text' onChange={this.handleChange}></input>
                 <label>Case sensitive: </label>
-                <input id='country_case_sen' type='checkbox'></input>
+                <input type='checkbox' onChange={this.checkboxChange}></input>
                 <table class='world_table'>
                     <thead>
                         <tr>
@@ -53,7 +59,7 @@ class WorldTable extends Component {
                         {this.state.worldtable.map(worldtable => {
                             var search = this.state.search;
                             var country = worldtable.Country; 
-                            if (!document.getElementById('country_case_sen').checked) {
+                            if (!this.state.checked) {
                                 search = search.toLowerCase();
                                 country = country.toLowerCase();
                             }

@@ -5,15 +5,22 @@ class VietnamTable extends Component {
     constructor() {
         super();
         this.handleChange = this.handleChange.bind(this);
+        this.checkboxChange = this.checkboxChange.bind(this);
         this.state = {
-            vietnamtable: [],
             search: '',
+            checked: false,
+            vietnamtable: [],
         }
     }
 
     handleChange(event) {
         this.setState({search: event.target.value})
     }
+
+    checkboxChange(event) {
+        this.setState({checked: event.target.checked})
+    }
+
 
     async componentDidMount() {
         fetch('api/vietnam_table')
@@ -31,7 +38,7 @@ class VietnamTable extends Component {
                 <h1>Statistic by Provinces in Vietnam</h1>
                 <input type='text' onChange={this.handleChange}></input>
                 <label>Case sensitive: </label>
-                <input id='province_case_sen' type='checkbox'></input>
+                <input type='checkbox' onChange={this.checkboxChange}></input>
                 {/* <form onSubmit={this.handleSubmit}>
                     <input type='text' onChange={this.handleChange}></input>
                     <button>search</button>
@@ -60,7 +67,7 @@ class VietnamTable extends Component {
                         {this.state.vietnamtable.map(vietnamtable => {
                             var search = this.state.search;
                             var province = vietnamtable["Provincial name"]; 
-                            if (!document.getElementById('province_case_sen').checked) {
+                            if (!this.state.checked) {
                                 search = search.toLowerCase();
                                 province = province.toLowerCase();
                             }
