@@ -29,10 +29,23 @@ const APP = EXPRESS();
 // }
 //scanData("vietnam-covid19")
 
+// var vietnam_table = [];
+// var params = {
+//     TableName: "vietnam-covid19"
+// }
+// docClient.scan(params, function(err,data) {
+//     if (err) {
+//         console.error("Unable to scan database. Error:", JSON.stringify(err, null, 2));
+//     } else {
+//         console.log("Scan succeeded.");
+//         vietnam_table = data["Items"];
+//     }
+// })
+
 //Routing
-APP.get('/', (req, res) => {
-    res.sendFile('/front-end/home.html', {root: __dirname});
-})
+// APP.get('/', (req, res) => {
+//     res.sendFile('/front-end/home.html', {root: __dirname});
+// })
 
 APP.get('/api/vietnam_table', (req, res) => {
     var vietnam_table = [];
@@ -132,4 +145,3 @@ var port = process.env.PORT || 5000;
 APP.listen(port, function () {
     console.log(`Server started on port ${port}`);
 });
-module.exports = APP;

@@ -6,12 +6,17 @@
 
 .world_table thead {
     display: block;
-    background: black;
-    color:#fff;
+    background: white;
+    color:black;
 }
 
 .world_table th, .world_table td {
-  padding: 5px;
-  text-align: left;
-  width: 100px;
+    padding: 5px;
+    text-align: left;
+    width: 150px;
+}
+
+.world_table input {
+    width: 18px;
+    height: 18px;
 }
