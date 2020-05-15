@@ -1,13 +1,13 @@
 .vietnam_table tbody{
-    display:block;
-    overflow-y: scroll;
-    height: 500px;
+  display:block;
+  overflow-y: scroll;
+  height: 500px;
 }
 
 .vietnam_table thead {
-    display: block;
-    background: white;
-    color:black;
+  display: block;
+  background: gray;
+  color:black;
 }
 
 .vietnam_table th, .vietnam_table td {
@@ -20,3 +20,13 @@
   width: 18px;
   height: 18px;
 }
+
+.vietnam_table tr:nth-of-type(even) {
+  background-color: #ebebeb;
+}
+
+.vietnam_search {
+  padding: 15px 15px;
+  text-align: center;
+}
+

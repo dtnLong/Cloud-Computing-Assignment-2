@@ -1,8 +1,19 @@
 .App {
-  padding-bottom: 50px;
-  text-align: left;
+    padding-bottom: 50px;
+    font-size: 18px;
 }
 
-table {
+.App h1 {
+  text-align: center;
+}
+
+.App table {
   margin: 0 auto;
+}
+
+.App header {
+  font-weight: bold;
+  text-align: center;
+  font-size: 50px;
+  padding: 25px 25px;
 }

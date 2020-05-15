@@ -6,7 +6,7 @@
 
 .world_table thead {
     display: block;
-    background: white;
+    background: gray;
     color:black;
 }
 
@@ -19,4 +19,13 @@
 .world_table input {
     width: 18px;
     height: 18px;
+}
+
+.world_table tr:nth-of-type(even) {
+    background-color: #ebebeb;
+}
+
+.world_search {
+    padding: 15px 15px;
+    text-align: center;
 }

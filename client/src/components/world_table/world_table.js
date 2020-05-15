@@ -9,14 +9,14 @@ class WorldTable extends Component {
         this.activesort = React.createRef();
         this.recoversort = React.createRef();
         this.deathsort = React.createRef();
-        this.sortProperty = {
-            image_ref: "",
-            value: '',
-            order: 'descending'
-        }
-        this.handleChange = this.handleChange.bind(this);
+        this.searchChange = this.searchChange.bind(this);
         this.checkboxChange = this.checkboxChange.bind(this);
         this.handleSorting = this.handleSorting.bind(this);
+        this.sortProperty = {
+            image_ref: "",
+            sort_target: '',
+            order: 'descending'
+        }
         this.state = {
             search: "",
             checked: false,
@@ -24,16 +24,25 @@ class WorldTable extends Component {
         }
     }
 
-    handleChange(event) {
+    componentDidMount() {
+        fetch('api/world_table')
+            .then(res => res.json())
+            .then(worldtable => this.setState({worldtable}))
+    }
+
+    //Handle search box change
+    searchChange(event) {
         this.setState({search: event.target.value});
     }
 
+    //Handle case sensitive
     checkboxChange(event) {
         this.setState({checked: event.target.checked})
     }
 
-    handleSorting(value, event) {
-        var sorted = this.state.worldtable; 
+    //Handle sorting
+    handleSorting(sort_target, event) {
+        var sorted_array = this.state.worldtable; 
         var references = {
             "Country": this.countrysort.current,
             "Confirmed": this.confirmsort.current,
@@ -41,14 +50,18 @@ class WorldTable extends Component {
             "Recovered": this.recoversort.current,
             "Deaths": this.deathsort.current
         }
+        // Set inital sort ref to current sort target
         if (this.sortProperty.image_ref === "") {
-            this.sortProperty.image_ref = references[value];
+            this.sortProperty.image_ref = references[sort_target];
         }
-        console.log(this.sortProperty.image_ref);
-        if (value !== this.sortProperty.value) {
+        // When the current sort target is different from previous sort target, 
+        // change previous image to default,
+        // store current ref and name of sort target, set order to descending
+        // Flip flop between ascending and descending if the same sort target is selected
+        if (sort_target !== this.sortProperty.sort_target) {
             this.sortProperty.image_ref.src = "/images/sorting_arrow.png"
-            this.sortProperty.image_ref = references[value];
-            this.sortProperty.value = value;
+            this.sortProperty.image_ref = references[sort_target];
+            this.sortProperty.sort_target = sort_target;
             this.sortProperty.order = "descending";
             this.sortProperty.image_ref.src = "/images/des-sort.png";
         } else if (this.sortProperty.order === "descending") {
@@ -58,21 +71,22 @@ class WorldTable extends Component {
             this.sortProperty.order = "descending"
             this.sortProperty.image_ref.src = "/images/des-sort.png";
         }
-        sorted.forEach(element => {
-            element["Confirmed"] = parseInt(element["Confirmed"] ,10);
-            element["Active"] = parseInt(element["Active"] ,10);
-            element["Recovered"] = parseInt(element["Recovered"] ,10);
-            element["Deaths"] = parseInt(element["Deaths"] ,10);
-        });
-        sorted.sort((a, b) => {
-            if (a[value] < b[value]) {
+        // Convert element in array that is not country to int for sorting
+        if (sort_target !== "Country") {
+            sorted_array.forEach(element => {
+                element[sort_target] = parseInt(element[sort_target] ,10);
+            });
+        }
+        // Sorting algorithm
+        sorted_array.sort((a, b) => {
+            if (a[sort_target] < b[sort_target]) {
                 if (this.sortProperty.order === "ascending") {
                     return -1;
                 } else {
                     return 1
                 }
             }
-            if (a[value] > b[value]) {
+            if (a[sort_target] > b[sort_target]) {
                 if (this.sortProperty.order === "ascending") {
                     return 1;
                 } else {
@@ -81,22 +95,19 @@ class WorldTable extends Component {
             }
             return 0;
         })
-        this.setState({worldtable: sorted});
-    }
-
-    componentDidMount() {
-        fetch('api/world_table')
-            .then(res => res.json())
-            .then(worldtable => this.setState({worldtable}))
+        this.setState({worldtable: sorted_array});
     }
 
     render() {
         return (
             <div>
                 <h1>Statistic by Country</h1>
-                <input type='text' onChange={this.handleChange}></input>
-                <label>Case sensitive: </label>
-                <input type='checkbox' onChange={this.checkboxChange}></input>
+                <div className='world_search'>
+                    <label>Search: </label>
+                    <input type='text' placeholder="Search country..." onChange={this.searchChange} pre></input>
+                    <label>  Case sensitive:</label>
+                    <input type='checkbox' onChange={this.checkboxChange}></input>
+                </div>
                 <table class='world_table'>
                     <thead>
                         <tr>
@@ -108,17 +119,6 @@ class WorldTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {this.state.worldtable.filter(province => province["Country"].includes(this.state.search))
-                            .map(worldtable =>
-                                <tr>
-                                    <td>{worldtable.Country}</td>
-                                    <td>{worldtable.Confirmed}</td>
-                                    <td>{worldtable.Active}</td>
-                                    <td>{worldtable.Recovered}</td>
-                                    <td>{worldtable.Deaths}</td>
-                                </tr>
-                            )
-                        } */}
                         {this.state.worldtable.map(worldtable => {
                             var search = this.state.search;
                             var country = worldtable.Country; 
@@ -139,7 +139,6 @@ class WorldTable extends Component {
                             }
                         })}
                     </tbody>
-                        
                 </table>
             </div>
         );
